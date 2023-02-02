@@ -38,39 +38,29 @@ import rajawali.RajawaliActivity;
 public class MotionDetectionActivity extends RajawaliActivity implements
         CvCameraViewListener2, OnTouchListener, SensorEventListener {
 
-    private com.timegalore.motiondetectionar.OpenGLRenderer mRenderer;
-
-    private static final String TAG = "ImageManipulation";
-
     public static final int VIEW_MODE_CAPTUREIMAGE = 2;
     public static final int VIEW_MODE_SHOWIMAGE = 3;
     public static final int VIEW_MODE_CAMSHIFT = 8;
-
-    private MenuItem mItemPreviewCaptureImage;
-    private MenuItem mItemPreviewSampleImage;
-    private MenuItem mItemCamShift;
-    private CameraBridgeViewBase mOpenCvCameraView;
-
-    private Mat loadedImage = null;
-
-    private Mat mRgba;
-
-    private boolean showThumbs = true;
-    private boolean showEllipse = true;
-
+    private static final String TAG = "ImageManipulation";
     public static int viewMode = VIEW_MODE_CAMSHIFT;
-
-    private com.timegalore.motiondetectionar.CAMShiftDetection csd;
-    private com.timegalore.motiondetectionar.MotionFlowDetection mfd;
-
-    // Accelerometer
-    SensorManager mSensor = null;
     private static int mSensorX;
     private static int mSensorY;
     private static int mSensorZ;
     // Accelerometer
-
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+    SensorManager mSensor = null;
+    private com.timegalore.motiondetectionar.OpenGLRenderer mRenderer;
+    private MenuItem mItemPreviewCaptureImage;
+    private MenuItem mItemPreviewSampleImage;
+    private MenuItem mItemCamShift;
+    private CameraBridgeViewBase mOpenCvCameraView;
+    private Mat loadedImage = null;
+    private Mat mRgba;
+    private final boolean showThumbs = true;
+    private boolean showEllipse = true;
+    private com.timegalore.motiondetectionar.CAMShiftDetection csd;
+    private com.timegalore.motiondetectionar.MotionFlowDetection mfd;
+    // Accelerometer
+    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {

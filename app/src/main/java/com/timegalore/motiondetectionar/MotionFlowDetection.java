@@ -2,7 +2,6 @@ package com.timegalore.motiondetectionar;
 
 import static org.opencv.imgproc.Imgproc.circle;
 
-import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -17,8 +16,6 @@ import org.opencv.video.Video;
 
 public class MotionFlowDetection {
 
-    private Mat mGray1 = null;
-    private Mat mGray2 = null;
     MatOfPoint initial = null;
     MatOfByte status = null;
     MatOfFloat err = null;
@@ -26,6 +23,8 @@ public class MotionFlowDetection {
     MatOfPoint2f nextPts = null;
     int maxCorners;
     Size imageSize;
+    private Mat mGray1 = null;
+    private Mat mGray2 = null;
 
     public MotionFlowDetection(Size s) {
         imageSize = s;

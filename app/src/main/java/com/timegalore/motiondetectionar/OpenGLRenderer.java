@@ -1,5 +1,8 @@
 package com.timegalore.motiondetectionar;
 
+import android.content.Context;
+import android.util.Log;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import rajawali.Object3D;
@@ -8,112 +11,99 @@ import rajawali.math.vector.Vector3;
 import rajawali.parser.LoaderOBJ;
 import rajawali.parser.ParsingException;
 import rajawali.renderer.RajawaliRenderer;
-import android.content.Context;
-import android.util.Log;
 
 public class OpenGLRenderer extends RajawaliRenderer {
 
-	private static final boolean DEBUG = true;
-	private static final String TAG = "OpenGLRenderer";
+    private static final String TAG = "OpenGLRenderer";
+    private static final double rtod = 180 / Math.PI;
+    private Object3D m3DObject;
 
-	private DirectionalLight mLight;
+    public OpenGLRenderer(Context context) {
+        super(context);
+        setFrameRate(60);
+    }
 
-	private Object3D m3DObject;
+    public void initScene() {
+        DirectionalLight mLight = new DirectionalLight(1f, 0.2f, -1.0f); // set the direction
+        mLight.setColor(1.0f, 1.0f, 1.0f);
+        mLight.setPower(2);
 
-	private static final double rtod = 180 / Math.PI;
+        LoaderOBJ objParser = new LoaderOBJ(mContext.getResources(),
+                mTextureManager, R.raw.block10_mtl);
 
-	public OpenGLRenderer(Context context) {
-		super(context);
-		setFrameRate(60);
-	}
+        try {
+            objParser.parse();
+        } catch (ParsingException e) {
 
-	public void initScene() {
-		mLight = new DirectionalLight(1f, 0.2f, -1.0f); // set the direction
-		mLight.setColor(1.0f, 1.0f, 1.0f);
-		mLight.setPower(2);
+            e.printStackTrace();
 
-		LoaderOBJ objParser = new LoaderOBJ(mContext.getResources(),
-				mTextureManager, R.raw.block10_mtl);
+        }
 
-		try {
-			objParser.parse();
-		} catch (ParsingException e) {
+        m3DObject = objParser.getParsedObject();
+        m3DObject.setPosition(0, 0, 0);
 
-			e.printStackTrace();
+        addChild(m3DObject);
 
-		}
+    }
 
-		m3DObject = objParser.getParsedObject();
-		m3DObject.setPosition(0, 0, 0);
+    @Override
+    public void onDrawFrame(GL10 glUnused) {
+        super.onDrawFrame(glUnused);
 
-		addChild(m3DObject);
+    }
 
-	}
+    public void set3DObjectPosition(double x, double y, double z) {
 
-	@Override
-	public void onDrawFrame(GL10 glUnused) {
-		super.onDrawFrame(glUnused);
+        if (m3DObject != null)
+            m3DObject.setPosition(x, y, z);
+    }
 
-	}
+    public Vector3 get3DObjectPosition() {
 
-	public void set3DObjectPosition(double x, double y, double z) {
+        return m3DObject.getPosition();
+    }
 
-		if (m3DObject != null)
-			m3DObject.setPosition(x, y, z);
-	}
+    public void setCameraPosition(double x, double y, double z) {
 
-	public Vector3 get3DObjectPosition() {
+        getCurrentCamera().setX(x);
+        getCurrentCamera().setY(y);
+        getCurrentCamera().setZ(z);
 
-		return m3DObject.getPosition();
-	}
+    }
 
-	public void setCameraPosition(double x, double y, double z) {
+    public void setCamLRTilt(double lrTiltAngleInRadians) {
+        getCurrentCamera().setRotZ(-lrTiltAngleInRadians * rtod);
 
-		getCurrentCamera().setX(x);
-		getCurrentCamera().setY(y);
-		getCurrentCamera().setZ(z);
+    }
 
-	}
+    public void setCamFBTilt(double fbTiltAngleInRadians) {
+        getCurrentCamera().setRotX(-fbTiltAngleInRadians * rtod);
 
-	public void setCamLRTilt(double lrTiltAngleInRadians) {
-		getCurrentCamera().setRotZ(-lrTiltAngleInRadians * rtod);
+    }
 
-	}
+    public Vector3 getCubeSize() {
+        return m3DObject.getScale();
+    }
 
-	public void setCamFBTilt(double fbTiltAngleInRadians) {
-		getCurrentCamera().setRotX(-fbTiltAngleInRadians * rtod);
+    public void setCubeSize(double d) {
+        m3DObject.setScale(d);
+    }
 
-	}
+    public void setLRTilt(double lrTiltAngleInRadians) {
+        m3DObject.setRotZ(-lrTiltAngleInRadians * rtod);
+    }
 
-	public void setCubeSize(double d) {
-		m3DObject.setScale(d);
-	}
+    public void setFBTilt(double fbTiltAngleInRadians) {
+        m3DObject.setRotX(-fbTiltAngleInRadians * rtod);
+    }
 
-	public Vector3 getCubeSize() {
-		return m3DObject.getScale();
-	}
+    public void setSpin(double spinAngleInDegrees) {
+        m3DObject.setRotY(m3DObject.getRotY() + spinAngleInDegrees);
+        Log.d(TAG, "getRotY: " + m3DObject.getRotY());
+    }
 
-	public void setLRTilt(double lrTiltAngleInRadians) {
-		m3DObject.setRotZ(-lrTiltAngleInRadians * rtod);
-
-	}
-
-	public void setFBTilt(double fbTiltAngleInRadians) {
-		m3DObject.setRotX(-fbTiltAngleInRadians * rtod);
-
-	}
-
-	public void setSpin(double spinAngleInDegrees) {
-
-		m3DObject.setRotY(m3DObject.getRotY() + spinAngleInDegrees);
-
-		if (DEBUG)
-			Log.d(TAG, "getRotY: " + m3DObject.getRotY());
-
-	}
-
-	public boolean isReady() {
-		return (m3DObject != null);
-	}
+    public boolean isReady() {
+        return (m3DObject != null);
+    }
 
 }
