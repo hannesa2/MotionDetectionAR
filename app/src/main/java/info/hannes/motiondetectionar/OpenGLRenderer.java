@@ -1,4 +1,4 @@
-package com.timegalore.motiondetectionar;
+package info.hannes.motiondetectionar;
 
 import android.content.Context;
 import android.util.Log;

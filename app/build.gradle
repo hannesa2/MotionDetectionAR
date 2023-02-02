@@ -33,7 +33,7 @@ android {
     lint {
         abortOnError false
     }
-    namespace 'com.timegalore.motiondetectionar'
+    namespace 'info.hannes.motiondetectionar'
 }
 
 dependencies {

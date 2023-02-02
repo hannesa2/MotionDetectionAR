@@ -1,4 +1,4 @@
-package com.timegalore.motiondetectionar
+package info.hannes.motiondetectionar
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -46,7 +46,7 @@ class MotionDetectionActivity : RajawaliActivity(), CvCameraViewListener2, OnTou
         Log.d(TAG, "loading file")
 
         // https://stackoverflow.com/q/18103994/1079990
-        val image= BitmapFactory.decodeResource(resources,R.drawable.red)
+        val image= BitmapFactory.decodeResource(resources, R.drawable.red)
         loadedImage = Mat(image.height, image.width, CvType.CV_8U, Scalar(4.0))
         val myBitmap32: Bitmap = image.copy(Bitmap.Config.ARGB_8888, true)
         Utils.bitmapToMat(myBitmap32, loadedImage)

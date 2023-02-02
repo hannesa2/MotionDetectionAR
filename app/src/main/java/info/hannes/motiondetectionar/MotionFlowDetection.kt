@@ -1,4 +1,4 @@
-package com.timegalore.motiondetectionar
+package info.hannes.motiondetectionar
 
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
