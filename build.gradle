@@ -1,0 +1,48 @@
+import org.gradle.internal.jvm.Jvm
+
+buildscript {
+    ext.kotlin_version = '1.7.22'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+println "Gradle uses Java ${Jvm.current()}"
+
+ext {
+    minSdk = 16
+    targetSdk = 33
+    compileSdk = 33
+}
+
+println("Building project ${getTag()}")
+
+subprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://artifactory.mxtracks.info/artifactory/gradle-dev-local/' }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+@SuppressWarnings('unused')
+static def getTag() {
+    def process = "git describe --tags".execute()
+    return process.text.toString().trim()
+}
+
+@SuppressWarnings('unused')
+static def getGitCommitCount() {
+    def process = "git rev-list HEAD --count".execute()
+    return process.text.toInteger()
+}
