@@ -115,7 +115,7 @@ public class CAMShiftDetection {
 						erosion_kernel_size / 2, erosion_kernel_size / 2));
 
 		Imgproc.erode(in, out, eroded_kernel, new Point(-1, -1), erosion_level,
-				Imgproc.BORDER_DEFAULT, new Scalar(0));
+				Core.BORDER_DEFAULT, new Scalar(0));
 
 		return out;
 	}

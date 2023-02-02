@@ -22,13 +22,12 @@ import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.RotatedRect;
 import org.opencv.core.Scalar;
-import org.opencv.highgui.Highgui;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
@@ -195,7 +194,7 @@ public class MotionDetectionActivity extends RajawaliActivity implements
             case MotionDetectionActivity.VIEW_MODE_CAPTUREIMAGE:
                 int w = mRgba.width();
                 int h = mRgba.height();
-                Core.rectangle(mRgba, new Point(w * 1 / 3, h * 1 / 3), new Point(
+                Imgproc.rectangle(mRgba, new Point(w * 1 / 3, h * 1 / 3), new Point(
                         w * 2 / 3, h * 2 / 3), new Scalar(255, 0, 0, 255));
                 break;
             case MotionDetectionActivity.VIEW_MODE_SHOWIMAGE:
@@ -204,17 +203,17 @@ public class MotionDetectionActivity extends RajawaliActivity implements
             case MotionDetectionActivity.VIEW_MODE_CAMSHIFT:
                 RotatedRect rr = csd.CAMShift(mRgba);
                 if (showEllipse)
-                    Core.ellipse(mRgba, rr, new Scalar(255, 255, 0), 5);
+                    Imgproc.ellipse(mRgba, rr, new Scalar(255, 255, 0), 5);
 
                 if (mfd == null)
                     mfd = new com.timegalore.motiondetectionar.MotionFlowDetection(mRgba.size());
 
                 int leftRightRot = mfd.motionFlowDetection(mRgba);
 
-                Core.putText(mRgba, "x: " + (int) rr.center.x + " x: " + mSensorX
+                Imgproc.putText(mRgba, "x: " + (int) rr.center.x + " x: " + mSensorX
                                 + " y: " + mSensorY + " z: " + mSensorZ + " r: "
                                 + leftRightRot, new Point(0, 30),
-                        Core.FONT_HERSHEY_COMPLEX, 1, new Scalar(255, 0, 0, 255), 2);
+                        Imgproc.FONT_HERSHEY_COMPLEX, 1, new Scalar(255, 0, 0, 255), 2);
 
                 if (mRenderer.isReady())
                     augmentImage(mRgba, rr, mSensorX, mSensorY, mSensorZ,
@@ -351,7 +350,7 @@ public class MotionDetectionActivity extends RajawaliActivity implements
 
         // this should be in BGR format according to the
         // documentation.
-        Mat image = Highgui.imread(file.getAbsolutePath());
+        Mat image = Imgcodecs.imread(file.getAbsolutePath());
 
         if (image.width() > 0) {
 
@@ -370,7 +369,7 @@ public class MotionDetectionActivity extends RajawaliActivity implements
         File root = Environment.getExternalStorageDirectory();
         File file = new File(root, filename);
 
-        Highgui.imwrite(file.getAbsolutePath(), image);
+        Imgcodecs.imwrite(file.getAbsolutePath(), image);
 
         Log.d(TAG, "writing: " + file.getAbsolutePath() + " (" + image.width() + ", " + image.height() + ")");
     }
