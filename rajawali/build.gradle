@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdkVersion rootProject.compileSdk
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion rootProject.targetSdk
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // VERSION_NAME no longer available as of 4.1
+        // https://issuetracker.google.com/issues/158695880
+        buildConfigField 'String', 'VERSION_NAME', "\"${getTag()}\""
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        animationsDisabled true
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+    }
+    lint {
+        abortOnError false
+    }
+    namespace 'rajawali.framework'
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.5.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
