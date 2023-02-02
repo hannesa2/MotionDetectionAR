@@ -33,7 +33,7 @@ public class OpenGLRenderer extends RajawaliRenderer {
 		mLight.setPower(2);
 
 		LoaderOBJ objParser = new LoaderOBJ(mContext.getResources(),
-				mTextureManager, R.raw.block10_obj);
+				mTextureManager, R.raw.block10_mtl);
 
 		try {
 			objParser.parse();
